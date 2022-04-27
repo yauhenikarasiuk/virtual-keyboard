@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import keycodes from './keycodes.js';
 
 export default class Keyboard {
@@ -24,9 +23,16 @@ export default class Keyboard {
     this.keyboard.className = 'keyboard';
     document.body.append(this.keyboard);
     this.keyboard.addEventListener('mousedown', this.handleMouseEvent.bind(this));
-    document.addEventListener('keydown', this.handleKeyDownEvent.bind(this));
-    document.addEventListener('keypress', this.handleKeyDownEvent.bind(this));
-    document.addEventListener('keyup', this.handleKeyUpEvent.bind(this));
+    document.addEventListener('keydown', (event) => {
+      const keyCode = event.code;
+      const keyElement = document.querySelector(`[data-code='${keyCode}']`);
+      keyElement.classList.add('key-pressed');
+    });
+    document.addEventListener('keyup', (event) => {
+      const keyCode = event.code;
+      const keyElement = document.querySelector(`[data-code='${keyCode}']`);
+      keyElement.classList.remove('key-pressed');
+    });
     document.body.append('Keyboard created for MacOS. To switch keyboard languages press CTRL+SHIFT');
     this.localeElement = document.createElement('p');
     this.localeElement.textContent = `Current keyboard language is ${this.locale === 'en' ? 'English' : 'Русский'}`;
@@ -46,7 +52,6 @@ export default class Keyboard {
     });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   handleMouseEvent(event) {
     const keyCode = event.target.getAttribute('data-code') || event.target.parentNode.getAttribute('data-code');
     if (!keyCode) {
@@ -98,20 +103,6 @@ export default class Keyboard {
       value = value.primary;
     }
     this.textArea.value += value;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  handleKeyDownEvent(event) {
-    const keyCode = event.code;
-    const keyElement = document.querySelector(`[data-code='${keyCode}']`);
-    keyElement.classList.add('key-pressed');
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  handleKeyUpEvent(event) {
-    const keyCode = event.code;
-    const keyElement = document.querySelector(`[data-code='${keyCode}']`);
-    keyElement.classList.remove('key-pressed');
   }
 
   render() {
