@@ -56,6 +56,9 @@ textarea {
 .key:hover {
   background-color: rgb(115, 137, 235);
 }
+.key:active{
+  box-shadow: inset 0px 2px 13px 4px blue;
+}
 .key .key-char-secondary {
   align-self: flex-start;
 }
