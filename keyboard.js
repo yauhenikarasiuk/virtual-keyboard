@@ -19,14 +19,20 @@ export default class Keyboard {
     ];
     this.textArea = document.createElement('textarea');
     document.body.append(this.textArea);
+    this.textArea.focus();
     this.keyboard = document.createElement('div');
     this.keyboard.className = 'keyboard';
     document.body.append(this.keyboard);
     this.keyboard.addEventListener('mousedown', this.handleMouseEvent.bind(this));
     document.addEventListener('keydown', (event) => {
+      this.textArea.focus();
       const keyCode = event.code;
       const keyElement = document.querySelector(`[data-code='${keyCode}']`);
       keyElement.classList.add('key-pressed');
+      if (keyCode === 'Tab') {
+        this.textArea.value += '\t';
+        event.preventDefault();
+      }
     });
     document.addEventListener('keyup', (event) => {
       const keyCode = event.code;
